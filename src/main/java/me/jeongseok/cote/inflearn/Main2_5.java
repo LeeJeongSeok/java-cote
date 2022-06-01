@@ -5,18 +5,16 @@ import java.util.Scanner;
 public class Main2_5 {
     public static int solution(int n) {
         int answer = 0;
+        int[] arr = new int[n+1];
 
         for (int i = 2; i <= n; i++) {
-            for (int j = 1; j <= i; j++) {
-                 if (i / j == i) {
-                     continue;
-                 }
-                 if (j / i == 1) {
-                     answer++;
-                 }
+            if (arr[i] == 0) {
+                answer++;
+                for (int j = i; j <= n; j=j+i) {
+                    arr[j] = 1;
+                }
             }
         }
-
         return answer;
     }
 
