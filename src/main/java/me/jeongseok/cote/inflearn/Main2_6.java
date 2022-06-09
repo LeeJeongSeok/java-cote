@@ -18,22 +18,33 @@ public class Main2_6 {
                 reverse = reverse * 10 + digit;
                 num /= 10;
             }
-
-            tempList.add(reverse);
         }
 
         // 소수인지 판별
         for (int i = 0; i < tempList.size(); i++) {
-            for (int j = 2; j <= Math.sqrt(tempList.get(i)); j++) {
-                if (tempList.get(i) % j == 0) {
-                    break;
-                }
+            if (isPrimeNumber(tempList.get(i))) {
                 resultList.add(tempList.get(i));
             }
         }
 
         return resultList;
     }
+
+    public static boolean isPrimeNumber(int n) {
+
+        // 1이면 소수판별할 필요가 없기 때문
+        if (n == 1) {
+            return false;
+        }
+
+        for (int j = 2; j <= Math.sqrt(n); j++) {
+            if (n % j == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
