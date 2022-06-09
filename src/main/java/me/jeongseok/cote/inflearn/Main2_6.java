@@ -18,6 +18,11 @@ public class Main2_6 {
                 reverse = reverse * 10 + digit;
                 num /= 10;
             }
+
+            // 1이면 소수판별할 필요가 없기 때문
+            if (reverse != 1) {
+                tempList.add(reverse);
+            }
         }
 
         // 소수인지 판별
@@ -31,11 +36,6 @@ public class Main2_6 {
     }
 
     public static boolean isPrimeNumber(int n) {
-
-        // 1이면 소수판별할 필요가 없기 때문
-        if (n == 1) {
-            return false;
-        }
 
         for (int j = 2; j <= Math.sqrt(n); j++) {
             if (n % j == 0) {
