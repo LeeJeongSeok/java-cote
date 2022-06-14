@@ -15,42 +15,16 @@ public class Main2_9 {
         int rightMax = 0;
 
         // 각 row별 최대값 구하기
-        for (int i = 0; i < n; i++) {
-            int rowTotal = 0;
-            for (int j = 0; j < n; j++) {
-                rowTotal += arr[i][j];
-            }
-            if (rowMax < rowTotal) {
-                rowMax = rowTotal;
-            }
-        }
+        rowMax = getRowMax(n, arr, rowMax);
 
         // 각 column별 최대값 구하기
-        for (int i = 0; i < n; i++) {
-            int columnTotal = 0;
-            for (int j = 0; j < n; j++) {
-                columnTotal += arr[j][i];
-            }
-            if (columnMax < columnTotal) {
-                columnMax = columnTotal;
-            }
-        }
+        columnMax = getColumnMax(n, arr, columnMax);
 
         // 왼쪽에서 오른쪽으로 가는 cross 값 구하기
-        for (int i = 0; i < n; i++) {
-            leftMax += arr[i][i];
-        }
+        leftMax = getLeftMax(n, arr, leftMax);
 
         // 오른쪽에서 왼쪽으로 가는 cross 값 구하기
-        for (int i = 0; i < n; i++) {
-            int rightTotal = 0;
-            for (int j = n-1; j >= 0; j--) {
-                rightTotal += arr[i][j];
-            }
-            if (rightMax < rightTotal) {
-                rightMax = rightTotal;
-            }
-        }
+        rightMax = getRightMax(n, arr, rightMax);
 
         // rowMax, columnMax, crossMax 값 중 최대값 뽑아내기
         list.add(rowMax);
@@ -60,6 +34,53 @@ public class Main2_9 {
 
         return Collections.max(list);
     }
+
+    private static int getRowMax(int n, int[][] arr, int rowMax) {
+        for (int i = 0; i < n; i++) {
+            int rowTotal = 0;
+            for (int j = 0; j < n; j++) {
+                rowTotal += arr[i][j];
+            }
+            if (rowMax < rowTotal) {
+                rowMax = rowTotal;
+            }
+        }
+        return rowMax;
+    }
+
+    private static int getColumnMax(int n, int[][] arr, int columnMax) {
+        for (int i = 0; i < n; i++) {
+            int columnTotal = 0;
+            for (int j = 0; j < n; j++) {
+                columnTotal += arr[j][i];
+            }
+            if (columnMax < columnTotal) {
+                columnMax = columnTotal;
+            }
+        }
+        return columnMax;
+    }
+
+    private static int getLeftMax(int n, int[][] arr, int leftMax) {
+        for (int i = 0; i < n; i++) {
+            leftMax += arr[i][i];
+        }
+        return leftMax;
+    }
+
+    private static int getRightMax(int n, int[][] arr, int rightMax) {
+        for (int i = 0; i < n; i++) {
+            int rightTotal = 0;
+            for (int j = n -1; j >= 0; j--) {
+                rightTotal += arr[i][j];
+            }
+            if (rightMax < rightTotal) {
+                rightMax = rightTotal;
+            }
+        }
+        return rightMax;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int N = sc.nextInt();
