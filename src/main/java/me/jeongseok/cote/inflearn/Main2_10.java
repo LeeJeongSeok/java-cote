@@ -8,6 +8,7 @@ public class Main2_10 {
         int answer = 0;
 
         // 상, 하, 좌, 우 로직 비교
+        // 애는 중첩포문으로 조건을 통과할때마다 계속 안으로 들어가야함
         for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= N; j++) {
                 // 상
