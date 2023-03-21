@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
+import java.util.stream.IntStream;
 
 /**
  * 1 4 6 2 3 7 10 5 8 9
@@ -11,33 +12,19 @@ import java.util.StringTokenizer;
 
 public class BOJ_10812 {
 
-	static int N, M, begin, end, mid;
+	static int N, M;
 	static int[] buckets;
-	static int[] temp;
 	static StringBuilder sb = new StringBuilder();
 
-	static void copyTemp() {
-		int distance = mid - begin;
-		temp = new int[distance + 1];
+	static int[] rotateBucket(int[] buckets, int begin, int end, int mid) {
+		int[] temp = new int[buckets.length];
+		System.arraycopy(buckets, 0, temp, 0, buckets.length);
 
-		for (int i = 0; i < distance; i++) {
-			temp[i + 1] = buckets[begin + i];
-		}
-	}
+		System.arraycopy(buckets, mid, temp, begin, end - mid + 1);
+		System.arraycopy(buckets, begin, temp, begin + end - mid + 1, mid - begin);
+		System.arraycopy(buckets, end + 1, temp, end + 1, buckets.length - 1 - end);
 
-	static void moveMid() {
-		int distance = end - mid;
-		for (int i = 0; i <= distance; i++) {
-			buckets[begin + i] = buckets[mid + i];
-		}
-	}
-
-	static void moveTemp() {
-		int start = end - mid;
-		int distance = mid - begin;
-		for (int i = 1; i <= distance; i++) {
-			buckets[begin + start + i] = temp[i];
-		}
+		return temp;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -53,21 +40,16 @@ public class BOJ_10812 {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 
-		buckets = new int[N + 1];
-
-		for (int i = 1; i <= 10; i++) {
-			buckets[i] = i;
-		}
+		buckets = IntStream.range(0, N + 1).toArray();
 
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine(), " ");
-			begin = Integer.parseInt(st.nextToken());
-			end = Integer.parseInt(st.nextToken());
-			mid = Integer.parseInt(st.nextToken());
+			int begin = Integer.parseInt(st.nextToken());
+			int end = Integer.parseInt(st.nextToken());
+			int mid = Integer.parseInt(st.nextToken());
 
-			copyTemp();
-			moveMid();
-			moveTemp();
+			buckets = rotateBucket(buckets, begin, end, mid);
+
 		}
 	}
 
