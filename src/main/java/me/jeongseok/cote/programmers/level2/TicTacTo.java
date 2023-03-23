@@ -1,5 +1,10 @@
 package me.jeongseok.cote.programmers.level2;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 /**
  *     * X 가 O 보다 많을 경우
  *     * O 가 X 보다 2개 이상 많을 경우
@@ -11,25 +16,20 @@ public class TicTacTo {
 	static int OCount = 0;
 	static int XCount = 0;
 
+	// 스트림으로 처리하면 2중 for가 필요없다.
 	static void getCount(String[] board) {
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[i].length(); j++) {
-				if (board[i].charAt(j) == 'O') {
-					OCount++;
-				} else if (board[i].charAt(j) == 'X') {
-					XCount++;
-				}
-			}
-		}
+		Map<Character, Long> collect = Arrays.stream(board)
+			.flatMap(row -> row.chars()
+				.mapToObj(word -> (char) word))
+			.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+		OCount = collect.getOrDefault('O', 0L).intValue();
+		XCount = collect.getOrDefault('X', 0L).intValue();
 	}
 
 	static boolean breakRuleOfCount() {
 
-		if (XCount > OCount) {
-			return false;
-		}
-
-		if (OCount - XCount >= 2) {
+		if (XCount > OCount || OCount - XCount >= 2) {
 			return false;
 		}
 
@@ -66,38 +66,36 @@ public class TicTacTo {
 
 
 	static int solution(String[] board) {
-		int answer = -1;
+		int answer = 1;
 
 		// O, X의 갯수를 먼저 파악
 		getCount(board);
 
 		// 갯수를 기준으로 규칙을 어긴 케이스 판별
-		if (breakRuleOfCount()) {
-			answer = 1;
-		} else {
+		if (!breakRuleOfCount()) {
 			answer = 0;
 		}
 
-		// 완성된 경우 규칙을 어긴 케이스 판별
-		if (breakRuleOfComplete(board, 'O')) {
-			if (OCount == XCount) {
-				answer = 0;
-			}
+		boolean oWin = breakRuleOfComplete(board, 'O');
+		boolean xWin = breakRuleOfComplete(board, 'X');
+
+		// 둘다 빙고면 문제 있음
+		if (oWin && xWin) {
+			answer = 0;
 		}
 
-		if (breakRuleOfComplete(board, 'X')) {
-			if (Math.abs(OCount - XCount) >= 1) {
-				answer = 0;
-			}
+		// 둘 중 하나가 완성된 경우 규칙을 어긴 케이스 판별
+		if (oWin && OCount == XCount || xWin && OCount > XCount) {
+			answer = 0;
 		}
 
 		return answer;
 	}
 
 	public static void main(String[] args) {
-		System.out.println(solution(new String[]{"O.X", ".O.", "..X"}));
-		System.out.println(solution(new String[]{"OOO", "...", "XXX"}));
+//		System.out.println(solution(new String[]{"O.X", ".O.", "..X"}));
+//		System.out.println(solution(new String[]{"OOO", "...", "XXX"}));
 		System.out.println(solution(new String[]{"...", ".X.", "..."}));
-		System.out.println(solution(new String[]{"...", "...", "..."}));
+//		System.out.println(solution(new String[]{"...", "...", "..."}));
 	}
 }
