@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
  */
 public class TicTacTo {
 
-	static int OCount = 0;
-	static int XCount = 0;
+	int OCount = 0;
+	int XCount = 0;
 
 	// 스트림으로 처리하면 2중 for가 필요없다.
-	static void getCount(String[] board) {
+	private void getCount(String[] board) {
 		Map<Character, Long> collect = Arrays.stream(board)
 			.flatMap(row -> row.chars()
 				.mapToObj(word -> (char) word))
@@ -27,8 +27,10 @@ public class TicTacTo {
 		XCount = collect.getOrDefault('X', 0L).intValue();
 	}
 
-	static boolean breakRuleOfCount() {
+	// 갯수를 기준으로 규칙을 어긴 케이스 판별
+	private boolean breakRuleOfCount() {
 
+		// X가 O보다 많은 경우 또는 O가 X보다 2개 이상 많은 경우
 		if (XCount > OCount || OCount - XCount >= 2) {
 			return false;
 		}
@@ -36,7 +38,7 @@ public class TicTacTo {
 		return true;
 	}
 
-	static boolean breakRuleOfComplete(String[] board, char word) {
+	private boolean breakRuleOfComplete(String[] board, char word) {
 		// 가로 완성
 		for (int i = 0; i < 3; i++) {
 			if (board[i].charAt(0) == word && board[i].charAt(1) == word && board[i].charAt(2) == word) {
@@ -65,7 +67,7 @@ public class TicTacTo {
 	}
 
 
-	static int solution(String[] board) {
+	public int solution(String[] board) {
 		int answer = 1;
 
 		// O, X의 갯수를 먼저 파악
@@ -95,7 +97,11 @@ public class TicTacTo {
 	public static void main(String[] args) {
 //		System.out.println(solution(new String[]{"O.X", ".O.", "..X"}));
 //		System.out.println(solution(new String[]{"OOO", "...", "XXX"}));
-		System.out.println(solution(new String[]{"...", ".X.", "..."}));
+//		System.out.println(solution(new String[]{"...", ".X.", "..."}));
 //		System.out.println(solution(new String[]{"...", "...", "..."}));
+
+
+
+
 	}
 }
