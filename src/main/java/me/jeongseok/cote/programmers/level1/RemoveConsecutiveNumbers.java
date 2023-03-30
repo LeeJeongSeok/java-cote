@@ -1,7 +1,6 @@
 package me.jeongseok.cote.programmers.level1;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * 프로그래머스 - 레벨1 - 같은 숫자는 싫어
