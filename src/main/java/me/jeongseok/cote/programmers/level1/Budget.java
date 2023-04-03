@@ -3,7 +3,7 @@ package me.jeongseok.cote.programmers.level1;
 import java.util.Arrays;
 
 /**
- * 프로그래머스 - 레벨1 - 예산
+ * 프로그래머스 - 레벨1 - 예산 풀이
  */
 public class Budget {
 
