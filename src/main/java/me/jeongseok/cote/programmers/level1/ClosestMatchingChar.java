@@ -3,7 +3,7 @@ package me.jeongseok.cote.programmers.level1;
 import java.util.HashMap;
 
 /**
- * 프로그래머스 - 레벨1 - 가장 가까운 글자
+ * 프로그래머스 - 레벨1 - 가장 가까운 같은 글자
  */
 public class ClosestMatchingChar {
 
