@@ -1,41 +1,29 @@
 package me.jeongseok.cote.programmers.level1;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 
 public class FruitVendor {
 
 	public int solution(int k, int m, int[] score) {
 		int answer = 0;
 
-		ArrayList<Integer> list = new ArrayList<>();
+		Arrays.sort(score);
+		int[] reverseScore = new int[score.length];
 
 		for (int i = 0; i < score.length; i++) {
-			list.add(score[i]);
+			reverseScore[i] = score[score.length - 1 - i];
 		}
 
-		// 큰 점수순으로 정렬
-		list.sort(Collections.reverseOrder());
-
+		int idx = 0;
 		while (true) {
 
 			// list의 사이즈가 m보다 작으면 더이상 상자를 만들 수 없으니 탈출
-			if (list.size() < m) {
+			if (idx >= reverseScore.length || idx + m > reverseScore.length) {
 				break;
 			}
-
-			// 앞에서부터 m개씩 잘라서 박스로 포장한다.
-			ArrayList<Integer> box = new ArrayList<>();
-			for (int i = 0; i < m; i++) {
-				box.add(list.get(i));
-			}
-
 			// 최소값을 구하고 금액을 계산한다.
-			answer += (Collections.min(box) * m);
-
-			for (int i = 0; i < m; i++) {
-				list.remove(0);
-			}
+			answer += reverseScore[idx + m - 1] * m;
+			idx += m;
 
 		}
 
