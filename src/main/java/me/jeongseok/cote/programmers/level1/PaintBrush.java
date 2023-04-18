@@ -4,28 +4,12 @@ public class PaintBrush {
 
 	public int solution(int n, int m, int[] section) {
 		int answer = 0;
-		int[] wall = new int[n + 1];
-		int roller = 0;
+		int rollerIdx = 0;
 
 		for (int i = 0; i < section.length; i++) {
-			wall[section[i]] = 1;
-		}
-
-		for (int i = 1; i <= n; i++) {
-			// 덧칠해야하는 경우
-			if (wall[i] == 1) {
-				// 벽을 벗어나는 경우
-				if (i + m > n) {
-					for (int j = i; j > i - m; j--) {
-						wall[j] = 0;
-					}
-					answer++;
-				} else {
-					for (int j = i; j < i + m; j++) {
-						wall[j] = 0;
-					}
-					answer++;
-				}
+			if (section[i] > rollerIdx) {
+				answer++;
+				rollerIdx = section[i] + m - 1;
 			}
 		}
 		return answer;
