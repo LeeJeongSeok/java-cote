@@ -45,7 +45,7 @@ public class _1260_ {
 			graph[i].sort(null);
 		}
 
-		dfs(V);
+//		dfs(V);
 
 		visited = new boolean[N + 1];
 		System.out.println();
@@ -86,7 +86,7 @@ public class _1260_ {
 
 			System.out.print(now + " ");
 
-			for (int i = 0; i < graph[now].size(); i++) {
+			for (int i = graph[now].size() - 1; i >= 0; i--) {
 				int next = graph[now].get(i);
 				if (!visited[next]) {
 					stack.push(next);
