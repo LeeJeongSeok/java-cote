@@ -9,12 +9,12 @@ public class BOJ_1978 {
 
 	static int count = 0;
 
-	static void isPrimeNumber(int n) {
+	static boolean isPrimeNumber(int n) {
 		// 1과 자기자신을 제외한 나머지 수로 나누어 떨어지지 않는 수
 		boolean isPrime = true;
 
 		if (n == 1) {
-			return;
+			return false;
 		}
 
 		for (int i = 2; i < n; i++) {
@@ -24,9 +24,7 @@ public class BOJ_1978 {
 			}
 		}
 
-		if (isPrime) {
-			count++;
-		}
+		return isPrime;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -35,7 +33,10 @@ public class BOJ_1978 {
 
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
-			isPrimeNumber(Integer.parseInt(st.nextToken()));
+			if (isPrimeNumber(Integer.parseInt(st.nextToken()))) {
+				count++;
+			}
+
 		}
 
 		System.out.println(count);

@@ -28,7 +28,7 @@ public class _14501_2 {
 			int day = i + T[i];
 
 			if (day > N + 1) {
-				dp[i] = dp[i + 1];
+				dp[i] = 0;
 			} else {
 				// dp[i + 1]는 dp[i]일을 하지 않았을 때 지금까지 일한 금액의 최대치
 				// dp[day] + p[i] dp[i]일날 일을 했고, 그 보상을 받는 날에 지금까지 일한 최대치와 현재 일한 날의 최대치를 더함
