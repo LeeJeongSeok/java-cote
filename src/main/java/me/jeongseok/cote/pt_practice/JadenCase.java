@@ -69,6 +69,7 @@ public class JadenCase {
 		}
 
 		return String.valueOf(newCharArray);
+
 	}
 
 	public static void main(String[] args) {
