@@ -40,36 +40,31 @@ public class JadenCase {
 
 	static StringBuilder sb = new StringBuilder();
 
-	public static String solution(String s) {
-		String[] split = s.split(" ");
+	static boolean flag = true;
 
-		for (int i = 0; i < split.length; i++) {
-			if (split[i].length() == 0) {
+	public static String solution(String s) {
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == ' ') {
 				sb.append(" ");
+				flag = true;
 			} else {
-				sb.append(changeLowerToUpper(split[i])).append(" ");
+				sb.append(changeLowerToUpper(s.charAt(i), flag));
+				flag = false;
 			}
 		}
 
-		return sb.toString().substring(0, sb.length() - 1);
+		return sb.toString();
 	}
 
-	public static String changeLowerToUpper(String s) {
-		char[] oldCharArray = s.toCharArray();
-		char[] newCharArray = new char[oldCharArray.length];
+	public static String changeLowerToUpper(char s, boolean flag) {
 
-		if (Character.isDigit(oldCharArray[0])) {
-			newCharArray[0] = oldCharArray[0];
+		if (Character.isDigit(s)) {
+			return String.valueOf(s);
+		} else if (flag) {
+			return String.valueOf(Character.toUpperCase(s));
 		} else {
-			newCharArray[0] = Character.toUpperCase(oldCharArray[0]);
+			return String.valueOf(Character.toLowerCase(s));
 		}
-
-		for (int i = 1; i < oldCharArray.length; i++) {
-			newCharArray[i] = Character.toLowerCase(oldCharArray[i]);
-		}
-
-		return String.valueOf(newCharArray);
-
 	}
 
 	public static void main(String[] args) {
