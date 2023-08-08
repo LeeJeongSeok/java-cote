@@ -16,8 +16,8 @@ import java.io.*;
 
 public class TreeInvestment {
 
-	static int N, M, K, result;
-	static int[][] map;
+	static int N, M, K;
+	static int[][] map, food;
 	static int[] dx;
 	static int[] dy;
 	static List<Tree> trees;
@@ -30,7 +30,8 @@ public class TreeInvestment {
 		M = Integer.parseInt(st.nextToken());
 		K = Integer.parseInt(st.nextToken());
 
-		map = new int[N + 1][N + 1];
+		map = new int[N][N];
+		food = new int[N][N];
 		dx = new int[]{-1, -1, -1, 0, 0, 1, 1, 1};
 		dy = new int[]{-1, 0, 1, -1, 1, -1, 0, 1};
 		trees = new ArrayList<>();
@@ -38,71 +39,84 @@ public class TreeInvestment {
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
 			for (int j = 0; j < N; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
+				map[i][j] = 5;
+				food[i][j] = Integer.parseInt(st.nextToken());
 			}
 		}
 
 		for (int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
-			int x = Integer.parseInt(st.nextToken());
-			int y = Integer.parseInt(st.nextToken());
+			int x = Integer.parseInt(st.nextToken()) - 1;
+			int y = Integer.parseInt(st.nextToken()) - 1;
 			int age = Integer.parseInt(st.nextToken());
 
 			trees.add(new Tree(x, y, age));
 		}
 
-		Collections.sort(trees);
-
+		// 봄, 여름, 가을, 겨울 시작
 		while (K-- > 0) {
 
+			Collections.sort(trees);
 
+			ArrayList<Tree> deadTrees = new ArrayList<>();
+			ArrayList<Tree> liveTrees = new ArrayList<>();
+
+
+			// 봄
 			for (int i = 0; i < trees.size(); i++) {
 				Tree curTree = trees.get(i);
-				int endTreeAge = 0;
 
 				// 양분보다 나이가 적을 경우
-				if (map[curTree.x][curTree.y] < curTree.age) {
-					curTree.age++;
+				if (curTree.age <= map[curTree.x][curTree.y]) {
 					map[curTree.x][curTree.y] -= curTree.age;
+					curTree.age++;
+					liveTrees.add(new Tree(curTree.x, curTree.y, curTree.age));
 				} else { // 양분보다 나이가 큰 경우 죽은 나무
-					map[curTree.x][curTree.y] += curTree.age;
-					endTreeAge += curTree.age;
-					curTree.age = 0;
-
+					deadTrees.add(new Tree(curTree.x, curTree.y, curTree.age));
 				}
+			}
 
-				// 죽은 나무의 나이에서 나누기 2를 한 후 몫만 현재 위치에 양분이 된다.
-				map[curTree.x][curTree.y] = map[curTree.x][curTree.y] / 2;
+			// 여름
+			for (int i = 0; i < deadTrees.size(); i++) {
+				Tree deadTree = deadTrees.get(i);
 
-				if (map[curTree.x][curTree.y] % 5 == 0) {
+				int x = deadTree.x;
+				int y = deadTree.y;
+				int age = deadTree.age;
+
+				map[x][y] += (age / 2);
+			}
+
+			// 가을
+			int size = liveTrees.size();
+			for (int i = 0; i < size; i++) {
+				Tree liveTree = liveTrees.get(i);
+
+				if (liveTree.age % 5 == 0) {
 					for (int j = 0; j < 8; j++) {
-						int nx = curTree.x + dx[i];
-						int ny = curTree.y + dy[i];
+						int nx = liveTree.x + dx[j];
+						int ny = liveTree.y + dy[j];
 
-						if (nx < 0 || nx > N || ny < 0 || ny > N) {
+						if (nx < 0 || nx >= N || ny < 0 || ny >= N) {
 							continue;
 						}
 
-						trees.add(new Tree(nx, ny, 1));
+						liveTrees.add(new Tree(nx, ny, 1));
 					}
 				}
 			}
 
 			// 겨울
 			for (int i = 0; i < N; i++) {
-				for (int j = 0; j < M; j++) {
-					map[i][j] += map[i][j];
+				for (int j = 0; j < N; j++) {
+					map[i][j] += food[i][j];
 				}
 			}
+
+			trees = liveTrees;
 		}
 
-		for (int i = 0; i < trees.size(); i++) {
-			if (trees.get(i).age != 0) {
-				result++;
-			}
-		}
-
-		System.out.println(result);
+		System.out.println(trees.size());
 	}
 
 }
