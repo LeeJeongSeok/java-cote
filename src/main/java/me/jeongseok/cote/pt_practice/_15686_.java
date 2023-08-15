@@ -6,7 +6,7 @@ public class _15686_ {
 
 	static int N, M, result;
 	static int[][] city;
-	static ArrayList<Pair> chickenHome;
+	static ArrayList<Pair> chickenHome, home;
 
 	static final int EMPTY_HOME = 0;
 	static final int HOME = 1;
@@ -29,31 +29,9 @@ public class _15686_ {
 			}
 		}
 
-//		if (countChickenHome() == M) {
-//			saveChickenHome();
-//			result = calculateChickenDistance();
-//		} else {
-//			destoryChickenHome(0);
-//		}
-
 		destoryChickenHome(0);
 
 		System.out.println(result);
-	}
-
-	// 입력받은 도시맵에서 치킨집 수를 카운팅
-	private static int countChickenHome() {
-		int count = 0;
-
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				if (city[i][j] == CHICKEN_HOME) {
-					count++;
-				}
-			}
-		}
-
-		return count;
 	}
 
 	// 도시에 있는 치킨집 중에서 최대 M개를 고르고, 나머지 치킨집은 모두 폐업시켜야 한다. (제대로 반영안되어있음)
@@ -65,24 +43,27 @@ public class _15686_ {
 		} else {
 			for (int i = 0; i < N; i++) {
 				for (int j = 0; j < N; j++) {
-					if (city[i][j] == 2) {
-						city[i][j] = 3;
+					if (city[i][j] == CHICKEN_HOME) {
+						city[i][j] = LIVING_CHICKEN_HOME;
 						destoryChickenHome(count + 1);
-						city[i][j] = 2;
+						city[i][j] = CHICKEN_HOME;
 					}
 				}
 			}
 		}
 	}
 
-	// 남아 있는 치킨집의 좌표를 저장한다.
+	// 남아 있는 치킨집의 좌표와 집의 좌표를 저장한다.
 	private static void saveChickenHome() {
 		chickenHome = new ArrayList<>();
+		home = new ArrayList<>();
 
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				if (city[i][j] == LIVING_CHICKEN_HOME) {
 					chickenHome.add(new Pair(i, j));
+				} else if (city[i][j] == HOME) {
+					home.add(new Pair(i, j));
 				}
 			}
 		}
@@ -92,18 +73,43 @@ public class _15686_ {
 
 		int total = 0;
 
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				if (city[i][j] == HOME) {
-					int temp = Integer.MAX_VALUE;
+//		for (int i = 0; i < N; i++) {
+//			for (int j = 0; j < N; j++) {
+//				if (city[i][j] == HOME) {
+//					int temp = Integer.MAX_VALUE;
+//
+//					for (int k = 0; k < chickenHome.size(); k++) {
+//						temp = Math.min(temp, Math.abs(i - chickenHome.get(k).x) + Math.abs(j - chickenHome.get(k).y));
+//					}
+//					total += temp;
+//				}
+//			}
+//		}
 
-					for (int k = 0; k < chickenHome.size(); k++) {
-						temp = Math.min(temp, Math.abs(i - chickenHome.get(k).x) + Math.abs(j - chickenHome.get(k).y));
-					}
-					total += temp;
-				}
+		// 한번 루프를 돌고나면 큐가 비어있기 때문에 그다음부터는 0이 출력됨
+//		while (!queue.isEmpty()) {
+//			Pair home = queue.poll();
+//
+//			int temp = Integer.MAX_VALUE;
+//
+//			for (int k = 0; k < chickenHome.size(); k++) {
+//				temp = Math.min(temp, Math.abs(home.x - chickenHome.get(k).x) + Math.abs(home.y - chickenHome.get(k).y));
+//			}
+//
+//			total += temp;
+//		}
+
+
+
+		for (int i = 0; i < home.size(); i++) {
+			int temp = Integer.MAX_VALUE;
+			for (int j = 0; j < chickenHome.size(); j++) {
+				temp = Math.min(temp, Math.abs(home.get(i).x - chickenHome.get(j).x) + Math.abs(home.get(i).y - chickenHome.get(j).y));
 			}
+			total += temp;
 		}
+
+
 
 		return total;
 	}
